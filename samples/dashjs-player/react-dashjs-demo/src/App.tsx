@@ -20,8 +20,8 @@ const App: React.FC = () => {
 
     // Form state
     const [socketUrl, setSocketUrl] = useState("wss://camera.geometris.com");
-    const [serialNumber, setSerialNumber] = useState("100151819016");
-    const [apiKey, setApiKey] = useState("ne83247hdhiwe384jdh");
+    const [serialNumber, setSerialNumber] = useState("");
+    const [apiKey, setApiKey] = useState("");
     const [cameraIndex, setCameraIndex] = useState(0);
     const [debugMode, setDebugMode] = useState(true);
     const [autoPlay, setAutoPlay] = useState(true);
@@ -574,7 +574,7 @@ const App: React.FC = () => {
                                 onChange={(e) =>
                                     setSerialNumber(e.target.value)
                                 }
-                                placeholder="100150660001"
+                                placeholder="Enter your device serial number"
                             />
                         </div>
 
@@ -584,7 +584,7 @@ const App: React.FC = () => {
                                 type="password"
                                 value={apiKey}
                                 onChange={(e) => setApiKey(e.target.value)}
-                                placeholder="ne83247hdhiwe384jdh"
+                                placeholder="Enter your API key"
                             />
                         </div>
 

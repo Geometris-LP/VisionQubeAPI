@@ -320,7 +320,6 @@ class DashcamLiveFeed extends React.Component<IDashcamLiveFeedProps> {
                     id={this.props.selectedCamera.CameraId}
                     width="100%"
                     controls
-                    autoPlay
                     muted
                     playsInline
                 >

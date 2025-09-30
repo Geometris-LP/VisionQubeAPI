@@ -29,7 +29,7 @@ npm install
 npm start
 ```
 
-The app will be available at http://localhost:3000
+The app will be available at http://localhost:8080
 
 ## Build for Production
 
@@ -41,11 +41,14 @@ npm run build
 
 ### WebRTC Socket.io Mode
 
-1. Enter your Socket.io server URL (e.g., `wss://camera.geometris.com`)
-2. Enter the device serial number and apiKey
-3. Configure ICE servers if needed (JSON format)
-4. Click "Connect WebRTC" to start streaming
-5. Use "Switch Camera" to toggle between front/back cameras
+1. Enter your Socket.io server URL (e.g., `wss://camera.geometris.com` or `http://192.168.0.17:3000`)
+2. **REQUIRED**: Enter your valid device serial number
+3. **REQUIRED**: Enter your valid API key
+4. Configure ICE servers if needed (JSON format)
+5. Click "Connect WebRTC" to start streaming
+6. Use "Switch Camera" to toggle between front/back cameras
+
+**Important**: You must provide valid serial number and API key values. The demo does not include default test credentials.
 
 ### DASH Streaming Mode
 
@@ -57,17 +60,19 @@ npm run build
 
 ### Default Settings
 
-Click "Load Defaults" to populate fields with production settings:
+Click "Load Defaults" to populate fields with production server settings:
 - Socket URL: `wss://camera.geometris.com`
-- Serial Number: `100151819016`
-- apiKey: `her8774kjddjpoiuru87`
 - ICE Servers: Google STUN + custom TURN server
+
+**Note**: You must manually enter your own valid serial number and API key.
 
 ### Debug Settings
 
 Click "Load Debug" for local development:
 - Socket URL: `http://localhost`
-- Debug Serial/apiKey for testing
+- ICE Servers: Google STUN
+
+**Note**: You must manually enter your own valid serial number and API key for testing.
 
 ### Available DASH Test Streams
 
@@ -154,10 +159,12 @@ if (handler.isConnected()) {
 
 ### Connection Issues
 
+- **Verify you have entered valid serial number and API key** - the demo requires your own credentials
 - Verify ICE servers are accessible
 - Check firewall settings for UDP traffic
 - Enable debug mode to see detailed logs in browser console
-- Ensure device is online and serial/apiKey are correct
+- Ensure device is online and reachable
+- Use `http://` instead of `https://` if connecting to a local server without SSL
 
 ### Common Errors
 

@@ -38,7 +38,7 @@ module.exports = {
       directory: path.join(__dirname, 'public')
     },
     compress: true,
-    port: 3000,
+    port: 8081,
     hot: true,
     historyApiFallback: true,
     proxy: {

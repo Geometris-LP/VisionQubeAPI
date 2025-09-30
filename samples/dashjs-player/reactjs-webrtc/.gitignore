@@ -190,7 +190,6 @@ build/typings/
 
 # Vim
 .vimrc
-.claude
 .vs
 
 **/node_modules/

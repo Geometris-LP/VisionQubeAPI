@@ -13,29 +13,36 @@ window.HCSS = {};
 const App: React.FC = () => {
     const [showModal, setShowModal] = React.useState(false);
     const [useWebRTC, setUseWebRTC] = React.useState(false);
+    const [serialNumber, setSerialNumber] = React.useState("");
+    const [apiKey, setApiKey] = React.useState("");
     const modalContainerRef = React.useRef<HTMLDivElement>(null);
 
     const handleShowModal = () => {
+        // Validate inputs based on mode
+        if (useWebRTC) {
+            if (!serialNumber.trim()) {
+                alert("Please enter a serial number for WebRTC mode");
+                return;
+            }
+            if (!apiKey.trim()) {
+                alert("Please enter an API key for WebRTC mode");
+                return;
+            }
+        }
+
         // Set the streaming mode globally so the modal can access it
         window.streamingMode = useWebRTC ? "webrtc" : "dash";
 
         setShowModal(true);
         setTimeout(() => {
             if (modalContainerRef.current) {
-                // get serial number from the query string
-                const urlParams = new URLSearchParams(window.location.search);
-                const apiKey = atob(urlParams.get("apiKey"));
-                //console.log("APIKey=====>>>", apiKey);
-                
-                const serialNumber = urlParams.get("serialNumber");
-
                 const webrtcConfig: IWebRtcConfig | undefined = useWebRTC
                     ? {
                           enabled: true,
                           dashOnFail: false,
                           mode: "socketio",
                           socketUrl: "wss://camera.geometris.com",
-                          serialNumber: serialNumber || "100151819016",
+                          serialNumber: serialNumber,
                           apiKey: apiKey,
                           cameraIndex: 0,
                           debug: true,
@@ -102,7 +109,8 @@ const App: React.FC = () => {
                                     marginBottom: "20px",
                                 }}
                             >
-                                <h4>Streaming Mode Selection</h4>
+                                <h4>Configuration</h4>
+
                                 <div className="form-group">
                                     <label
                                         className="checkbox-inline"
@@ -143,6 +151,40 @@ const App: React.FC = () => {
                                     </div>
                                 </div>
 
+                                {useWebRTC && (
+                                    <>
+                                        <div className="form-group">
+                                            <label htmlFor="serialNumber">
+                                                <strong>Serial Number:</strong>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="serialNumber"
+                                                placeholder="Enter device serial number"
+                                                value={serialNumber}
+                                                onChange={(e) => setSerialNumber(e.target.value)}
+                                                disabled={showModal}
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="apiKey">
+                                                <strong>API Key:</strong>
+                                            </label>
+                                            <input
+                                                type="password"
+                                                className="form-control"
+                                                id="apiKey"
+                                                placeholder="Enter API key"
+                                                value={apiKey}
+                                                onChange={(e) => setApiKey(e.target.value)}
+                                                disabled={showModal}
+                                            />
+                                        </div>
+                                    </>
+                                )}
+
                                 {useWebRTC ? (
                                     <div
                                         className="alert alert-success"
@@ -161,8 +203,6 @@ const App: React.FC = () => {
                                                 Server:
                                                 wss://camera.geometris.com
                                             </li>
-                                            <li>Serial: 100151819016</li>
-                                            <li>APIKey: ***************</li>
                                             <li>
                                                 STUN/TURN servers configured
                                             </li>

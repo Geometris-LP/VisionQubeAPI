@@ -29,7 +29,7 @@ Run the development server:
 npm start
 ```
 
-The application will open automatically at `http://localhost:3000`
+The application will open automatically at `http://localhost:8081`
 
 ## Building for Production
 
@@ -96,17 +96,66 @@ reactjs-webrtc/
 
 ## Component Usage
 
-The `DashcamLiveFeedModal` component accepts two props:
+The application has two modes: DASH and WebRTC.
 
-- `gpsSerial`: GPS device serial number (string)
-- `equipmentCode`: Equipment identifier (string)
+### DASH Mode (Default)
 
-Example:
+- No configuration required
+- Simply click "Open Dashcam Live Feed Modal" to start streaming with sample MPEG-DASH streams
+
+### WebRTC Mode
+
+When you check "Use WebRTC with Socket.IO", you must provide:
+
+1. **Serial Number** (Text Input)
+   - Device serial number
+   - Required for WebRTC mode only
+
+2. **API Key** (Password Input)
+   - Authentication key for WebRTC connection
+   - Required for WebRTC mode only
+   - Entered via password input field for security
+
+### Usage Flow
+
+**For DASH Mode:**
+1. Click "Open Dashcam Live Feed Modal" to start streaming
+
+**For WebRTC Mode:**
+1. Check the "Use WebRTC with Socket.IO" checkbox
+2. Enter the device serial number in the "Serial Number" text field
+3. Enter the API key in the "API Key" password field
+4. Click "Open Dashcam Live Feed Modal" to start streaming
+
+The component will validate that both serial number and API key are provided when WebRTC mode is enabled.
+
+### Programmatic Usage
+
 ```typescript
-import { init } from './components/DashcamLiveFeedModal';
+import { init, IWebRtcConfig } from './components/DashcamLiveFeedModal';
 
-// Initialize the modal
-init('GPS123456', 'Equipment-001', document.getElementById('container'));
+// For DASH mode
+init('GPS123456', 'Equipment-001', document.getElementById('container'), 'dash');
+
+// For WebRTC mode
+const webrtcConfig: IWebRtcConfig = {
+    enabled: true,
+    mode: "socketio",
+    socketUrl: "wss://camera.geometris.com",
+    serialNumber: "your-serial-number",
+    apiKey: "your-api-key",
+    cameraIndex: 0,
+    debug: true,
+    iceServers: [
+        { urls: "stun:camera.geometris.com:3478" },
+        {
+            urls: "turn:camera.geometris.com:3478",
+            username: "devices",
+            credential: "A82*ndcBX"
+        }
+    ]
+};
+init('GPS123456', 'Equipment-001', document.getElementById('container'), 'webrtc', webrtcConfig);
 ```
 
 ## Notes
